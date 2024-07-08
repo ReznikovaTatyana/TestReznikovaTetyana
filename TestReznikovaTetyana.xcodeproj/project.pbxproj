@@ -9,23 +9,45 @@
 /* Begin PBXBuildFile section */
 		044EC3A22C36CF7800D49617 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044EC3A12C36CF7800D49617 /* AppDelegate.swift */; };
 		044EC3A42C36CF7800D49617 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044EC3A32C36CF7800D49617 /* SceneDelegate.swift */; };
-		044EC3A62C36CF7800D49617 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044EC3A52C36CF7800D49617 /* ViewController.swift */; };
-		044EC3A92C36CF7800D49617 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 044EC3A82C36CF7800D49617 /* Base */; };
+		044EC3A62C36CF7800D49617 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044EC3A52C36CF7800D49617 /* HomeViewController.swift */; };
 		044EC3AC2C36CF7800D49617 /* TestReznikovaTetyana.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 044EC3AA2C36CF7800D49617 /* TestReznikovaTetyana.xcdatamodeld */; };
 		044EC3AE2C36CF7A00D49617 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 044EC3AD2C36CF7A00D49617 /* Assets.xcassets */; };
 		044EC3B12C36CF7A00D49617 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 044EC3B02C36CF7A00D49617 /* Base */; };
+		044EC3B92C36D04300D49617 /* CardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044EC3B82C36D04300D49617 /* CardCollectionViewCell.swift */; };
+		044EC3BB2C36D06B00D49617 /* HeaderCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044EC3BA2C36D06B00D49617 /* HeaderCollectionView.swift */; };
+		044EC3BD2C36D08A00D49617 /* CustomDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044EC3BC2C36D08900D49617 /* CustomDateView.swift */; };
+		044EC3BF2C36D0A400D49617 /* CustomPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044EC3BE2C36D0A400D49617 /* CustomPickerView.swift */; };
+		044EC3C12C36D0D200D49617 /* DetailImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044EC3C02C36D0D200D49617 /* DetailImageViewController.swift */; };
+		044EC3C32C36D0F600D49617 /* ApiModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044EC3C22C36D0F600D49617 /* ApiModel.swift */; };
+		044EC3C52C36D11300D49617 /* NasaApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044EC3C42C36D11300D49617 /* NasaApi.swift */; };
+		044EC3C72C374DF900D49617 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044EC3C62C374DF900D49617 /* ImageCache.swift */; };
+		044EC3C92C3752EE00D49617 /* HistoryCustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044EC3C82C3752EE00D49617 /* HistoryCustomButton.swift */; };
+		046B6A9D2C3ADD9300FF3624 /* PickerModelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046B6A9C2C3ADD9300FF3624 /* PickerModelView.swift */; };
+		047A5BF62C3BF9450023048E /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047A5BF52C3BF9450023048E /* CustomButton.swift */; };
+		047A5C012C3BFC8D0023048E /* CustomColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047A5C002C3BFC8D0023048E /* CustomColors.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		044EC39E2C36CF7800D49617 /* TestReznikovaTetyana.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestReznikovaTetyana.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		044EC3A12C36CF7800D49617 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		044EC3A32C36CF7800D49617 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		044EC3A52C36CF7800D49617 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		044EC3A82C36CF7800D49617 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		044EC3A52C36CF7800D49617 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		044EC3AB2C36CF7800D49617 /* TestReznikovaTetyana.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TestReznikovaTetyana.xcdatamodel; sourceTree = "<group>"; };
 		044EC3AD2C36CF7A00D49617 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		044EC3B02C36CF7A00D49617 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		044EC3B22C36CF7A00D49617 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		044EC3B82C36D04300D49617 /* CardCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardCollectionViewCell.swift; sourceTree = "<group>"; };
+		044EC3BA2C36D06B00D49617 /* HeaderCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCollectionView.swift; sourceTree = "<group>"; };
+		044EC3BC2C36D08900D49617 /* CustomDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDateView.swift; sourceTree = "<group>"; };
+		044EC3BE2C36D0A400D49617 /* CustomPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPickerView.swift; sourceTree = "<group>"; };
+		044EC3C02C36D0D200D49617 /* DetailImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailImageViewController.swift; sourceTree = "<group>"; };
+		044EC3C22C36D0F600D49617 /* ApiModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiModel.swift; sourceTree = "<group>"; };
+		044EC3C42C36D11300D49617 /* NasaApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NasaApi.swift; sourceTree = "<group>"; };
+		044EC3C62C374DF900D49617 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
+		044EC3C82C3752EE00D49617 /* HistoryCustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryCustomButton.swift; sourceTree = "<group>"; };
+		046B6A9C2C3ADD9300FF3624 /* PickerModelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerModelView.swift; sourceTree = "<group>"; };
+		047A5BF52C3BF9450023048E /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
+		047A5C002C3BFC8D0023048E /* CustomColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColors.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,16 +80,83 @@
 		044EC3A02C36CF7800D49617 /* TestReznikovaTetyana */ = {
 			isa = PBXGroup;
 			children = (
-				044EC3A12C36CF7800D49617 /* AppDelegate.swift */,
-				044EC3A32C36CF7800D49617 /* SceneDelegate.swift */,
-				044EC3A52C36CF7800D49617 /* ViewController.swift */,
-				044EC3A72C36CF7800D49617 /* Main.storyboard */,
-				044EC3AD2C36CF7A00D49617 /* Assets.xcassets */,
-				044EC3AF2C36CF7A00D49617 /* LaunchScreen.storyboard */,
+				047A5BFC2C3BFA0F0023048E /* Aplication */,
+				047A5BF82C3BF9A60023048E /* Controllers */,
+				047A5BFB2C3BF9EA0023048E /* CustomCell */,
+				047A5BF72C3BF96D0023048E /* CustomElements */,
+				047A5BFF2C3BFA3E0023048E /* Api */,
+				047A5BF42C3BF9030023048E /* Model */,
+				047A5BF32C3BF8E50023048E /* Resources */,
 				044EC3B22C36CF7A00D49617 /* Info.plist */,
 				044EC3AA2C36CF7800D49617 /* TestReznikovaTetyana.xcdatamodeld */,
 			);
 			path = TestReznikovaTetyana;
+			sourceTree = "<group>";
+		};
+		047A5BF32C3BF8E50023048E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				044EC3AD2C36CF7A00D49617 /* Assets.xcassets */,
+				044EC3AF2C36CF7A00D49617 /* LaunchScreen.storyboard */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		047A5BF42C3BF9030023048E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				044EC3C22C36D0F600D49617 /* ApiModel.swift */,
+				046B6A9C2C3ADD9300FF3624 /* PickerModelView.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		047A5BF72C3BF96D0023048E /* CustomElements */ = {
+			isa = PBXGroup;
+			children = (
+				047A5C002C3BFC8D0023048E /* CustomColors.swift */,
+				047A5BF52C3BF9450023048E /* CustomButton.swift */,
+				044EC3BA2C36D06B00D49617 /* HeaderCollectionView.swift */,
+				044EC3BC2C36D08900D49617 /* CustomDateView.swift */,
+				044EC3BE2C36D0A400D49617 /* CustomPickerView.swift */,
+				044EC3C82C3752EE00D49617 /* HistoryCustomButton.swift */,
+			);
+			path = CustomElements;
+			sourceTree = "<group>";
+		};
+		047A5BF82C3BF9A60023048E /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				044EC3A52C36CF7800D49617 /* HomeViewController.swift */,
+				044EC3C02C36D0D200D49617 /* DetailImageViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		047A5BFB2C3BF9EA0023048E /* CustomCell */ = {
+			isa = PBXGroup;
+			children = (
+				044EC3B82C36D04300D49617 /* CardCollectionViewCell.swift */,
+			);
+			path = CustomCell;
+			sourceTree = "<group>";
+		};
+		047A5BFC2C3BFA0F0023048E /* Aplication */ = {
+			isa = PBXGroup;
+			children = (
+				044EC3A32C36CF7800D49617 /* SceneDelegate.swift */,
+				044EC3A12C36CF7800D49617 /* AppDelegate.swift */,
+			);
+			path = Aplication;
+			sourceTree = "<group>";
+		};
+		047A5BFF2C3BFA3E0023048E /* Api */ = {
+			isa = PBXGroup;
+			children = (
+				044EC3C42C36D11300D49617 /* NasaApi.swift */,
+				044EC3C62C374DF900D49617 /* ImageCache.swift */,
+			);
+			path = Api;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -130,7 +219,6 @@
 			files = (
 				044EC3AE2C36CF7A00D49617 /* Assets.xcassets in Resources */,
 				044EC3B12C36CF7A00D49617 /* Base in Resources */,
-				044EC3A92C36CF7800D49617 /* Base in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,24 +229,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				044EC3C52C36D11300D49617 /* NasaApi.swift in Sources */,
+				044EC3C72C374DF900D49617 /* ImageCache.swift in Sources */,
+				046B6A9D2C3ADD9300FF3624 /* PickerModelView.swift in Sources */,
+				044EC3BF2C36D0A400D49617 /* CustomPickerView.swift in Sources */,
 				044EC3AC2C36CF7800D49617 /* TestReznikovaTetyana.xcdatamodeld in Sources */,
-				044EC3A62C36CF7800D49617 /* ViewController.swift in Sources */,
+				044EC3BB2C36D06B00D49617 /* HeaderCollectionView.swift in Sources */,
+				044EC3C12C36D0D200D49617 /* DetailImageViewController.swift in Sources */,
+				044EC3C32C36D0F600D49617 /* ApiModel.swift in Sources */,
+				044EC3C92C3752EE00D49617 /* HistoryCustomButton.swift in Sources */,
+				044EC3A62C36CF7800D49617 /* HomeViewController.swift in Sources */,
+				047A5C012C3BFC8D0023048E /* CustomColors.swift in Sources */,
 				044EC3A22C36CF7800D49617 /* AppDelegate.swift in Sources */,
+				044EC3B92C36D04300D49617 /* CardCollectionViewCell.swift in Sources */,
 				044EC3A42C36CF7800D49617 /* SceneDelegate.swift in Sources */,
+				044EC3BD2C36D08A00D49617 /* CustomDateView.swift in Sources */,
+				047A5BF62C3BF9450023048E /* CustomButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		044EC3A72C36CF7800D49617 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				044EC3A82C36CF7800D49617 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		044EC3AF2C36CF7A00D49617 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -300,7 +392,6 @@
 				INFOPLIST_FILE = TestReznikovaTetyana/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -327,7 +418,6 @@
 				INFOPLIST_FILE = TestReznikovaTetyana/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
