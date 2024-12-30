@@ -9,9 +9,13 @@ import Foundation
 import UIKit
 
 //MARK: Протокол для делегата, який надає методи для зміни видимості loyerView та зміни зоголовка дати в хедері
-protocol CustomDateViewDelegate {
+protocol CustomDateViewDelegate: AnyObject {
     func changeTitle(text: String)
     func loyerIsHeaden(isHeaden: Bool)
+    func didSelectDate(date: String)
+}
+
+protocol DateGetApiDelegate: AnyObject {
     func didSelectDate(date: String)
 }
 
@@ -22,12 +26,22 @@ class CustomDateView: UIView {
     let closeButton = UIButton(type: .custom)
     let tickButton = UIButton(type: .custom)
     let dateLabel = UILabel()
-    var delegate: CustomDateViewDelegate?
+    weak var delegate: CustomDateViewDelegate?
+    weak var delegateApi: DateGetApiDelegate?
+  
     
   
+    struct InitView {
+        let viewController: UIView
+    }
+    private var initView: InitView
+    
+    
     // MARK: - Initialization
-    init() {
-         super.init(frame: .zero)
+    init(initView: InitView) {
+        self.initView = initView
+        super.init(frame: .zero)
+        initView.viewController.addSubview(self)
          setupUI()
          createDatePicker()
          createDateLabel()
@@ -46,6 +60,7 @@ class CustomDateView: UIView {
     //MARK: Налаштування загального вигляду в'ю
     private func setupUI() {
         self.backgroundColor = .white
+        self.translatesAutoresizingMaskIntoConstraints = false
         self.clipsToBounds = true
         self.layer.cornerRadius = 50
         self.layer.shadowColor = UIColor.black.cgColor
@@ -104,28 +119,30 @@ class CustomDateView: UIView {
     //MARK: Налаштування констрейнтів
     private func makeConstraints() {
         NSLayoutConstraint.activate([
-            self.widthAnchor.constraint(equalToConstant: 353),
-            self.heightAnchor.constraint(equalToConstant: 312),
             
-            closeButton.heightAnchor.constraint(equalToConstant: 44),
-            closeButton.widthAnchor.constraint(equalToConstant: 44),
+            self.centerXAnchor.constraint(equalTo: initView.viewController.centerXAnchor),
+            self.centerYAnchor.constraint(equalTo: initView.viewController.centerYAnchor),
+            self.widthAnchor.constraint(equalTo: initView.viewController.widthAnchor, multiplier: 0.9),
+            self.heightAnchor.constraint(equalTo: initView.viewController.heightAnchor, multiplier: 0.36),
+            
+            closeButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.14),
+            closeButton.widthAnchor.constraint(equalTo: closeButton.heightAnchor),
             closeButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 20),
             closeButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
             
-            tickButton.heightAnchor.constraint(equalToConstant: 44),
-            tickButton.widthAnchor.constraint(equalToConstant: 44),
-            tickButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 20),
-            tickButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 289),
+            tickButton.heightAnchor.constraint(equalTo: closeButton.heightAnchor),
+            tickButton.widthAnchor.constraint(equalTo: closeButton.widthAnchor),
+            tickButton.topAnchor.constraint(equalTo: closeButton.topAnchor),
+            tickButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
             
-            dateLabel.heightAnchor.constraint(equalToConstant: 28),
-            dateLabel.widthAnchor.constraint(equalToConstant: 81),
+            dateLabel.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.09),
+            dateLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.23),
             dateLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 28),
-            dateLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 136),
+            dateLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
-            datePicker.widthAnchor.constraint(equalToConstant: 297),
-            datePicker.heightAnchor.constraint(equalToConstant: 212),
-            datePicker.topAnchor.constraint(equalTo: self.topAnchor, constant: 80),
-            datePicker.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 28),
+            datePicker.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            datePicker.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20),
+            datePicker.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.68)
         ])
     }
     
@@ -137,12 +154,11 @@ class CustomDateView: UIView {
     
     //MARK: Обробник натискання кнопки підтвердження вибору
     @objc func changeTitle() {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMMM d, yyyy"
-        let pickerTextDate = formatter.string(from: datePicker.date)
-        delegate?.changeTitle(text: pickerTextDate)
+        let pickerTextDate = FormatterString.shared.formatterDateToFetchString(date: datePicker.date)
+        let textDate = FormatterString.shared.formatterDateToTitleString(date: datePicker.date)
+        delegate?.changeTitle(text: textDate)
         delegate?.loyerIsHeaden(isHeaden: true)
-        delegate?.didSelectDate(date: pickerTextDate)
+        delegateApi?.didSelectDate(date: pickerTextDate)
         self.isHidden = true
         
     }

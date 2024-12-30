@@ -13,6 +13,7 @@ class CustomButton: UIButton {
     // MARK: - Properties
     let imageViewCustomButton = UIImageView()
     let labelCustomButton = UILabel()
+    
    
     // MARK: - Initialization
     override init(frame: CGRect) {
@@ -34,24 +35,24 @@ class CustomButton: UIButton {
         imageViewCustomButton.translatesAutoresizingMaskIntoConstraints = false
         labelCustomButton.translatesAutoresizingMaskIntoConstraints = false
         labelCustomButton.text = "All"
-        labelCustomButton.font = UIFont.boldSystemFont(ofSize: 17)
+        labelCustomButton.font = UIFont.customFont
         addSubview(labelCustomButton)
         addSubview(imageViewCustomButton)
         NSLayoutConstraint.activate([
-            self.widthAnchor.constraint(equalToConstant: 140),
-            self.heightAnchor.constraint(equalToConstant: 38),
             
             imageViewCustomButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 7),
-            imageViewCustomButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 7),
-            imageViewCustomButton.widthAnchor.constraint(equalToConstant: 24),
-            imageViewCustomButton.heightAnchor.constraint(equalToConstant: 24),
+            imageViewCustomButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            imageViewCustomButton.widthAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.7),
+            imageViewCustomButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.7),
             
-            labelCustomButton.heightAnchor.constraint(equalToConstant: 22),
+            labelCustomButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.6),
             labelCustomButton.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            labelCustomButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 9),
-            labelCustomButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 37)
+            labelCustomButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            labelCustomButton.leadingAnchor.constraint(equalTo: imageViewCustomButton.trailingAnchor, constant: 6)
         ])
     }
     
 }
+
+
 

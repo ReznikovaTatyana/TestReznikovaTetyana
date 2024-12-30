@@ -1,144 +1,171 @@
-////
-////  NasaApi.swift
-////  TestReznikovaTetyana
-////
-////  Created by mac on 04.07.2024.
-////
+//
+//  NasaApi.swift
+//  TestReznikovaTetyana
+//
+//  Created by mac on 04.07.2024.
+//
+import UIKit
+import SDWebImage
 
-import Foundation
-
-extension Date {
-    func toString() -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        return dateFormatter.string(from: self)
-    }
-}
-
-extension String {
-    func toDate() -> Date? {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        return dateFormatter.date(from: self)
-    }
-}
-
-func dates(from startDate: Date, to endDate: Date) -> [Date] {
-    var dates: [Date] = []
-    var currentDate = startDate
-
-    while currentDate <= endDate {
-        dates.append(currentDate)
-        currentDate = Calendar.current.date(byAdding: .day, value: 1, to: currentDate)!
-    }
-
-    return dates
-}
 
 class NasaApi {
+   
+    
     static let shared = NasaApi()
+    private init() {}
     
-    private let apiKey = "Aq49iFWIdiqdvRsRgROCScApieyEgkIm5ZQfoERw"
+  
+    var photoArray = [Photo]()
+    
+    private let apiKey = "xN6hKEZPSBB251oQS4LnsxM8GFoarTfoKip10BFt"
+    //ObeaELebJgrYzI6mNBEe7LIWlzC4Os5uU2h3c799
     private let baseUrlString = "https://api.nasa.gov/mars-photos/api/v1/rovers"
-    private var rovers: [Rover] = []
-    var cameras: [(name: String, fullName: String)] = []
+   
     
-    func getRovers(completion: @escaping ([Rover]?) -> Void) {
-        guard let url = URL(string: "https://api.nasa.gov/mars-photos/api/v1/rovers?/photos?earth_date?&api_key=\(apiKey)") else { return }
+    private func createURLForPhoto(rover: String, date: String) -> URL? {
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = "api.nasa.gov"
+        components.path = "/mars-photos/api/v1/rovers/\(rover)/photos"
+        components.queryItems = [
+            URLQueryItem(name: "earth_date", value: date),
+            URLQueryItem(name: "api_key", value: apiKey)
+        ]
+        return components.url
+    }
+    
+   
+    
+    
+    
+  
+    
+      
+    
+    
+    func getRovers(completion: @escaping ([Rover]?)-> Void){
+        let startTime = CFAbsoluteTimeGetCurrent()
+        let urlString = "https://api.nasa.gov/mars-photos/api/v1/rovers?api_key=Vtz4MAaa0MWVp551iMvNr8glKtXiYB99qrwIN61B"
+
         
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            if let error = error {
-                print("Error fetching rovers: \(error)")
-                completion(nil)
+        guard let url = URL(string: urlString) else {return}
+        let request = URLRequest(url: url)
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else{
+                
+                //print("Network error:", error ?? "Unknown error")
                 return
-            } else if let resp = response as? HTTPURLResponse {
-                print("Response status code: \(resp.statusCode)")
             }
+            if let jsonString = String(data: data, encoding: .utf8) {
+                   print("Received JSON: \(jsonString)")
+               } else {
+                   //print("Failed to convert data to string")
+               }
             
-            guard let responseData = data else {
-                completion(nil)
+            do {
+                let result = try JSONDecoder().decode(RoverArray.self, from: data)
+                completion(result.rovers)
+            } catch {
+               // print("Decoding error:", error)
+            }
+                let endTime = CFAbsoluteTimeGetCurrent()
+                print("API request time: \(endTime - startTime) seconds")
+            
+        }.resume()
+        
+        
+    }
+    
+  
+    
+    
+    func getCameras(rover: [Rover], completion: @escaping([RoverCamera]) -> Void) {
+        let cameras = rover.flatMap({$0.cameras})
+        var filterCmeras: [RoverCamera] = []
+        for camera in cameras {
+            if !filterCmeras.contains(camera) {
+                filterCmeras.append(camera)
+                    }
+                }
+        completion(filterCmeras)
+    }
+    
+    func getMaxDate(rover: [Rover], completion: @escaping(String) -> Void) {
+        let maxDate = rover.map({$0.maxDate})
+        guard let lastMaxDate = maxDate.last else {return}
+        completion(lastMaxDate)
+    }
+    
+    
+//    
+    func fetchPhoto(rover: String, date: String, completion: @escaping([Photo]?) -> Void) {
+    
+        guard let url = createURLForPhoto(rover: rover, date: date) else {
+            print("Failed to create URL")
+            return }
+        
+        let request = URLRequest(url: url)
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                print("Network error:", error ?? "Unknown error")
+                
                 return
             }
             
             do {
-                let roversResponse = try JSONDecoder().decode(MarsRoverPhotos.self, from: responseData)
-                self.rovers = roversResponse.rovers
-                self.cameras = self.rovers.flatMap { rover in
-                    rover.cameras.map { camera in
-                        (name: camera.name, fullName: camera.fullName)
-                    }
-                }
-                completion(roversResponse.rovers)
+                let result = try JSONDecoder().decode(PhotosElement.self, from: data)
+                completion(result.photos)
             } catch {
-                print("Error decoding JSONrover: \(error)")
-                completion(nil)
+                print(error)
             }
         }.resume()
     }
-    
-    func getPhotos(rover: String, camera: String, date: String, completion: @escaping ([Photo]?) -> Void) {
-        let urlString = "\(baseUrlString)/\(rover)/photos?earth_date=\(date)&camera=\(camera)&api_key=\(apiKey)"
+//    
+//   
+//    
+    func fetchPhotosForAllRovers(date: String, completion: @escaping ([Photo]?) -> Void) {
         
-        guard let url = URL(string: urlString) else {
-            completion(nil)
-            return
+        getRovers { [weak self] rover in
+            guard let self = self, let rovers = rover else {return}
+            
+            let roversNames = rovers.map { $0.name }
+            var allPhotos: [Photo] = []
+            let group = DispatchGroup()
+            for rover in roversNames {
+                group.enter()
+                fetchPhoto(rover: rover, date: date) { photos in
+                    if let photos = photos {
+                        allPhotos.append(contentsOf: photos)
+                    }
+                    group.leave()
+                }
+            }
+            
+            group.notify(queue: .main) {
+                completion(allPhotos)
+            }
         }
         
-        print("Fetching photos for rover: \(rover), camera: \(camera), date: \(date)")
-        
-        URLSession.shared.dataTask(with: url) { data, response, error in
+    }
+    
+//    func getPhoto(photos: [Photo], completion: @escaping([String]) -> Void) {
+//        let photo = photos.map({$0.image})
+//        completion(photo)
+//    }
+//    
+    func loadImage(url: URL, imageView: UIImageView, completion: @escaping(UIImage?) -> Void) {
+//
+        imageView.sd_setImage(with: url) { image, error, cacheType, url in
             if let error = error {
-                print("Error fetching photos: \(error)")
-                completion(nil)
-                return
-            } else if let resp = response as? HTTPURLResponse {
-                print("Response status code: \(resp.statusCode)")
-            }
-            
-            guard let responseData = data else {
-                completion(nil)
-                return
-            }
-            
-            do {
-                let photosResponse = try JSONDecoder().decode(PhotoResponse.self, from: responseData)
-                completion(photosResponse.photos)
-            } catch {
-                print("Error decoding JSONphoto: \(error)")
-                completion(nil)
-            }
-        }.resume()
-    }
-    
-    func getAllPhotos(date: String, completion: @escaping ([Photo]) -> Void) {
-        var allPhotos: [Photo] = []
-        let dispatchGroup = DispatchGroup()
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        
-        let maxDate = Date.now
-        
-        for rover in rovers {
-            guard let landingDate = rover.landingDate.toDate() else { continue }
-            let datesArray = dates(from: landingDate, to: maxDate)
-            
-            for camera in cameras {
-                for dat in datesArray.prefix(7) { // Обмеження до 7 днів
-                    dispatchGroup.enter()
-                    let dateString = dateFormatter.string(from: dat)
-                    getPhotos(rover: rover.name, camera: camera.name, date: dateString) { photos in
-                        if let photos = photos {
-                            allPhotos.append(contentsOf: photos)
-                        }
-                        dispatchGroup.leave()
-                    }
+                    print("Error loading image: \(error.localizedDescription)")
+            } else if image != nil {
+                   // print("Image loaded successfully from \(cacheType == .none ? "network" : "cache")")
                 }
+                imageView.image = image
+                completion(image)
             }
         }
-        
-        dispatchGroup.notify(queue: .main) {
-            completion(allPhotos)
-        }
+  
     }
-}
+
+

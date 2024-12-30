@@ -25,12 +25,20 @@ class HeaderCollectionView: UIView {
     let filterCameraButton = CustomButton()
     let saveFilterButton = UIButton(type: .custom)
     let image = UIImageView()
-    var delegate: HeaderCollectionViewDelegate?
+    weak var delegate: HeaderCollectionViewDelegate?
     
  
-    // MARK: - Ініціалізація
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    struct InitView {
+        let viewController: UIView
+    }
+    private var initView: InitView
+    
+    
+    // MARK: - Initialization
+    init(initView: InitView) {
+        self.initView = initView
+        super.init(frame: .zero)
+        initView.viewController.addSubview(self)
         self.backgroundColor = .projectOrange
         setupView()
     }
@@ -53,21 +61,23 @@ class HeaderCollectionView: UIView {
     // MARK: Створення заголовку "MARS.CAMERA"
     private func createTitleMars() {
         titleMars.translatesAutoresizingMaskIntoConstraints = false
-        titleMars.font = UIFont.boldSystemFont(ofSize: 34)
+        titleMars.font = UIFont.customFontLargeTitle
+        titleMars.numberOfLines = 1
+        titleMars.textAlignment = .left
         titleMars.text = "MARS.CAMERA"
-        titleMars.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        titleMars.textColor = .projectBlack
         addSubview(titleMars)
     }
     
     // MARK: Створення лейблу для відображення поточної дати
     private func createDateLabel() {
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
-        dateLabel.font = UIFont.boldSystemFont(ofSize: 17)
+        dateLabel.font = UIFont.customFont
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM d, yyyy"
         let textDate = formatter.string(from: Date.now)
         dateLabel.text = textDate
-        dateLabel.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        dateLabel.textColor = .projectBlack
         addSubview(dateLabel)
     }
     
@@ -76,7 +86,7 @@ class HeaderCollectionView: UIView {
         calendarButton.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: "calendar")
         calendarButton.setImage(image, for: .normal)
-        calendarButton.imageView?.contentMode = .scaleAspectFill
+        calendarButton.imageView?.contentMode = .scaleAspectFit
         calendarButton.contentVerticalAlignment = .fill
         calendarButton.contentHorizontalAlignment = .fill
         calendarButton.backgroundColor = .clear
@@ -116,32 +126,45 @@ class HeaderCollectionView: UIView {
     // MARK: Налаштування констрейнтів
     private func makeConstraints() {
         NSLayoutConstraint.activate([
-            titleMars.widthAnchor.constraint(equalToConstant: 245),
-            titleMars.heightAnchor.constraint(equalToConstant: 42),
+            
+            
+            self.heightAnchor.constraint(equalTo: initView.viewController.heightAnchor, multiplier: 0.17),
+            self.topAnchor.constraint(equalTo: initView.viewController.safeAreaLayoutGuide.topAnchor),
+            self.leadingAnchor.constraint(equalTo: initView.viewController.leadingAnchor),
+            self.trailingAnchor.constraint(equalTo: initView.viewController.trailingAnchor),
+            
+            
             titleMars.topAnchor.constraint(equalTo: self.topAnchor, constant: 2),
             titleMars.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 19),
+            titleMars.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.7),
+            titleMars.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.3),
+           
+            dateLabel.topAnchor.constraint(equalTo: titleMars.bottomAnchor, constant: 2),
+            dateLabel.leadingAnchor.constraint(equalTo: titleMars.leadingAnchor),
+            dateLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.48),
+            dateLabel.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.15),
             
-            dateLabel.widthAnchor.constraint(equalToConstant: 187),
-            dateLabel.heightAnchor.constraint(equalToConstant: 22),
-            dateLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 19),
-            dateLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 46),
-            
-            calendarButton.widthAnchor.constraint(equalToConstant: 30),
-            calendarButton.heightAnchor.constraint(equalToConstant: 34),
-            calendarButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 332),
+            calendarButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.08),
+            calendarButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.23),
+            calendarButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -24),
             calendarButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 19),
             
-            filterRoverButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
-            filterRoverButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 90),
+            filterRoverButton.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 22),
+            filterRoverButton.leadingAnchor.constraint(equalTo: titleMars.leadingAnchor),
+            filterRoverButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.25),
+            filterRoverButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.36),
             
-            filterCameraButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 90),
-            filterCameraButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 172),
             
-            saveFilterButton.widthAnchor.constraint(equalToConstant: 38),
-            saveFilterButton.heightAnchor.constraint(equalToConstant: 38),
-            saveFilterButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 90),
-            saveFilterButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 335)
-    
+            filterCameraButton.topAnchor.constraint(equalTo: filterRoverButton.topAnchor),
+            filterCameraButton.leadingAnchor.constraint(equalTo: filterRoverButton.trailingAnchor, constant: 12),
+            filterCameraButton.widthAnchor.constraint(equalTo: filterRoverButton.widthAnchor),
+            filterCameraButton.heightAnchor.constraint(equalTo: filterRoverButton.heightAnchor),
+            
+            saveFilterButton.leadingAnchor.constraint(equalTo: filterCameraButton.trailingAnchor, constant: 23),
+            saveFilterButton.topAnchor.constraint(equalTo: filterRoverButton.topAnchor),
+            saveFilterButton.widthAnchor.constraint(equalTo: filterRoverButton.heightAnchor),
+            saveFilterButton.heightAnchor.constraint(equalTo: filterRoverButton.heightAnchor),
+            
         ])
     }
     

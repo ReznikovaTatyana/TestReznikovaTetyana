@@ -11,43 +11,37 @@ import UIKit
 class CardCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Properties
-    
+ 
     let cardImageView = UIImageView()
     let roverLabel = UILabel()
     let cameraLabel = UILabel()
     let dateLabel = UILabel()
+    let loader: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView()
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        indicator.style = .large
+        indicator.color = .projectGrey
+        indicator.hidesWhenStopped = true
+        return indicator
+    }()
     
-    var photo: Photo? {
-            didSet {
-                configureUI()
-            }
-        }
+    lazy var homeCellModel: HomeCellModel = HomeCellModel()
     
-//    var array: Photo? {
-//        didSet {
-//            if let camera = array?.camera {
-//                cameraLabel.text = "Camera: " + "\(camera)"
+//    var photo: Photo? {
+//            didSet {
+//                configureCell()
 //            }
-//            if  let rover = array?.rover {
-//                roverLabel.text = "Rover: " + "\(rover)"
-//            }
-//            if let date = array?.earthDate {
-//                dateLabel.text = "Date: " + "\(date)"
-//            }
-//            if let image = array?.imgSrc {
-//                cardImageView.image = UIImage(named: image)
-//            }
-//             
 //        }
-   // }
-   
+//   
     // MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
+        prepareForReuse()
         setupUI()
         createCarsImageView()
         createLabels()
         makeConstraints()
+        //addLoader(loader: loader, imageView: cardImageView)
     }
     
     required init?(coder: NSCoder) {
@@ -56,6 +50,15 @@ class CardCollectionViewCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+    }
+    
+    override func prepareForReuse() {
+            super.prepareForReuse()
+            cardImageView.image = nil // Очищення попереднього зображення
+            roverLabel.text = nil
+            cameraLabel.text = nil
+            dateLabel.text = nil
+ 
     }
     
     // MARK: - UI Setup
@@ -77,8 +80,10 @@ class CardCollectionViewCell: UICollectionViewCell {
     private func createCarsImageView() {
         cardImageView.clipsToBounds = true
         cardImageView.layer.cornerRadius = 20
+        cardImageView.image = nil
         cardImageView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(cardImageView)
+        cardImageView.addSubview(loader)
     }
     
     private func createLabels() {
@@ -90,8 +95,8 @@ class CardCollectionViewCell: UICollectionViewCell {
     // MARK: Налаштування для всіх лейблів
     private func upgrateLabels(label: UILabel) {
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 16)
-        label.textColor = .projectLightGrey
+        label.numberOfLines = 0
+       
         contentView.addSubview(label)
     }
     
@@ -113,64 +118,61 @@ class CardCollectionViewCell: UICollectionViewCell {
             cameraLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 53),
             cameraLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             
-            dateLabel.heightAnchor.constraint(equalToConstant: 22),
+            dateLabel.heightAnchor.constraint(equalToConstant: 42),
             dateLabel.widthAnchor.constraint(equalToConstant: 187),
             dateLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 101),
-            dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
+            dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            
+            loader.centerXAnchor.constraint(equalTo: cardImageView.centerXAnchor),
+            loader.centerYAnchor.constraint(equalTo: cardImageView.centerYAnchor),
         ])
         
     }
     
+//    
+//    func addLoader(loader: UIActivityIndicatorView, imageView: UIImageView) {
+//            guard let photo = photo else { return }
+//            addAttributedText(photo: photo)
+//            guard let url = URL(string: photo.image) else {return}
+//                loader.startAnimating()
+//                NasaApi.shared.loadImage(url: url, imageView: imageView) { [weak self] image in
+//                    guard let self = self else {return}
+//                    DispatchQueue.main.async  {
+//                        loader.stopAnimating()
+//                        if self.photo?.image == photo.image {
+//                            imageView.image = image
+//                                    }
+//            }
+//            }
+//    
+//        }
+    
     
     // MARK: Налаштування ячейки з отриманами данними з Api
-    private func configureUI() {
-           guard let photo = photo else { return }
-        roverLabel.text =  "Rover: " + "\(photo.rover.name)"
-        cameraLabel.text = "Camera: " + "\(photo.camera.fullName)"
-        dateLabel.text =  "Date: " + "\(photo.earthDate)"
-            if let url = URL(string: photo.imgSrc) {
-                self.downloadImage(from: url) { image in
-                    DispatchQueue.main.async {
+    func configureCell(photo: Photo) {
+        addAttributedText(photo: photo)
+        guard let url = URL(string: photo.image) else {return}
+            loader.startAnimating()
+        
+        Task {
+            let image = try? await ImageService.downloadImage(urlString: photo.image)
+            DispatchQueue.main.async {
+                self.loader.stopAnimating()
                     self.cardImageView.image = image
-                }
             }
+            
         }
+            
     }
-   
-    // MARK: - Завантаження зображення
     
-    private func downloadImage(from url: URL, completion: @escaping (UIImage?) -> Void) {
-            let cacheKey = url.absoluteString
-            if let cachedImage = ImageCache.shared.image(forKey: cacheKey) {
-                print("Зображення знайдено у кеші для ключа: \(cacheKey)")
-                completion(cachedImage)
-                return
-            }
-        print("Зображення не знайдено у кеші, завантаження з: \(url.absoluteString)")
-            
-            guard var components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
-                completion(nil)
-                return
-            }
-            components.scheme = "https"
-            
-            guard let secureURL = components.url else {
-                completion(nil)
-                return
-            }
-            
-            let task = URLSession.shared.dataTask(with: secureURL) { data, response, error in
-                guard let data = data, let image = UIImage(data: data) else {
-                    completion(nil)
-                    return
-                }
-                print("Завантажено зображення, збереження у кеш для ключа: \(cacheKey)")
-                ImageCache.shared.setImage(image, forKey: cacheKey)
-                completion(image)
-            }
-            task.resume()
-        }
-
+    private func addAttributedText(photo: Photo) {
+        let stringRoverName = FormatterString.shared.formatterString(string: photo.earthDate)
+            roverLabel.attributedText = DisineString.shared.roverLabel(textApi: photo.rover.name)
+            cameraLabel.attributedText = DisineString.shared.cameraLabel(textApi: photo.camera.fullName)
+            dateLabel.attributedText = DisineString.shared.dateLabel(textApi: stringRoverName)
+       
+    }
+ 
 }
 
  
